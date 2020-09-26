@@ -1,6 +1,6 @@
 /***************************************************************************//**
 * \file cyb06xxa_cm0plus.ld
-* \version 2.80
+* \version 2.90.1
 *
 * Linker file for the GNU C compiler.
 *
@@ -387,9 +387,11 @@ SECTIONS
     /* Places the code in the Execute in Place (XIP) section. See the smif driver
     *  documentation for details.
     */
-    .cy_xip :
+    cy_xip :
     {
+        __cy_xip_start = .;
         KEEP(*(.cy_xip))
+        __cy_xip_end = .;
     } > xip
 
 

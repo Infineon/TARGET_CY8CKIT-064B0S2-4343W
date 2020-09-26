@@ -2,7 +2,7 @@
 
 ## Overview
 
-The CY8CKIT-064B0S2-4343W PSoC 64 Wi-Fi BT Pioneer Kit is a low-cost hardware platform that enables design and debug of PSoC 6 MCUs. It comes with a Murata 1LV Module (CYW4343W Wi-Fi + Bluetooth Combo Chip), industry-leading CapSense for touch buttons and slider, on-board debugger/programmer with KitProg3, microSD card interface, 512-Mb Quad-SPI NOR flash, PDM-PCM microphone interface.
+The CY8CKIT-064B0S2-4343W PSoC 64 Secure Boot Wi-Fi BT Pioneer Kit is a low-cost hardware platform that enables design and debug of PSoC 64 MCUs. It comes with a Murata 1LV Module (CYW4343W Wi-Fi + Bluetooth Combo Chip), industry-leading CapSense for touch buttons and slider, on-board debugger/programmer with KitProg3, microSD card interface, 512-Mb Quad-SPI NOR flash, 4-MBit Quad-SPI FRAM, and a PDM-PCM microphone interface.
 
 ![](docs/html/board.png)
 
@@ -43,11 +43,8 @@ Defines:
 | Clock    | Source    | Output Frequency |
 |----------|-----------|------------------|
 | FLL      | IMO       | 100.0 MHz        |
-| PLL      | IMO       | 144.0 MHz        |
+| PLL      | IMO       | 48.0 MHz         |
 | CLK_HF0  | CLK_PATH0 | 100 MHz          |
-| CLK_HF2  | CLK_PATH0 | 50 MHz           |
-| CLK_HF3  | CLK_PATH0 | 100 MHz          |
-| CLK_HF4  | CLK_PATH0 | 100 MHz          |
 
 ### Power Configuration
 

@@ -26,12 +26,17 @@ ifeq ($(WHICHFILE),true)
 $(info Processing $(lastword $(MAKEFILE_LIST)))
 endif
 
+# Set the default build recipe for this board if not set by the user
+include $(dir $(lastword $(MAKEFILE_LIST)))/locate_recipe.mk
+
 # MCU device selection
 DEVICE:=CYB0644ABZI-S2D44
 # Additional devices on the board
 ADDITIONAL_DEVICES:=CYW4343WKUBG
 # Default target core to CM4 if not already set
 CORE?=CM4
+# Basic architecture specific components
+COMPONENTS+=CAT1A
 # Define default type of bootloading method [single, dual]
 # single -> CM4 only, multi -> CM0 and CM4
 SECURE_BOOT_STAGE?=single
@@ -59,40 +64,49 @@ else
 CY_SECURE_POLICY_NAME?=policy_multi_CM0_CM4
 endif
 
-# Python path definition
-ifeq ($(OS),Windows_NT)
-CY_PYTHON_PATH?=python
+#Define the toolchain path
+ifeq ($(TOOLCHAIN),ARM)
+TOOLCHAIN_PATH=$(CY_COMPILER_ARM_DIR)
 else
-CY_PYTHON_PATH?=python3
+TOOLCHAIN_PATH=$(CY_COMPILER_GCC_ARM_DIR)
+endif
+
+# Python path definition
+CY_PYTHON_REQUIREMENT=true
+
+# Check if CM0P Library exists
+POST_BUILD_CM0_LIB_PATH=$(call CY_MACRO_FINDLIB,psoc6cm0p)
+ifeq ($(POST_BUILD_CM0_LIB_PATH), NotPresent)
+# Backward compatibility, try hard-coded paths instead
+POST_BUILD_CM0_LIB_PATH=$(CY_INTERNAL_APPLOC)/libs/psoc6cm0p/COMPONENT_CM0P_SECURE
+endif
+
+# Check if Target BSP Library exists
+POST_BUILD_BSP_LIB_PATH_INTERNAL=$(call CY_MACRO_FINDLIB,TARGET_CY8CKIT-064B0S2-4343W)
+ifeq ($(POST_BUILD_BSP_LIB_PATH_INTERNAL), NotPresent)
+# Backward compatibility, try hard-coded paths instead
+POST_BUILD_BSP_LIB_PATH_INTERNAL=$(CY_TARGET_DIR)
+endif
+
+ifeq ($(OS),Windows_NT)
+ifneq ($(CY_WHICH_CYGPATH),)
+POST_BUILD_BSP_LIB_PATH=$(shell cygpath -m --absolute $(POST_BUILD_BSP_LIB_PATH_INTERNAL))
+else
+POST_BUILD_BSP_LIB_PATH=$(abspath $(POST_BUILD_BSP_LIB_PATH_INTERNAL))
+endif
+else
+POST_BUILD_BSP_LIB_PATH=$(abspath $(POST_BUILD_BSP_LIB_PATH_INTERNAL))
 endif
 
 # BSP-specific post-build action
-# CySecureTools Image ID for CM4 Applications is 16 in case of multi-stage, 1 for single-stage,
-# Image ID for CM0 Applications is always 1
-ifeq ($(CORE), CM4)
-ifeq ($(SECURE_BOOT_STAGE), single)
-CY_BSP_POSTBUILD=cysecuretools --target cyb06xxa --policy ./policy/$(CY_SECURE_POLICY_NAME).json sign-image --hex $(CY_CONFIG_DIR)/$(APPNAME).hex --image-id 1
-else
-# In the multi-stage case, by default,
-# 1) The CM0P Secure hex file is copied from the psoc6cm0p asset into the build folder
-# 2) The CM0P hex file is signed according to the policy
-# 3) The CM4 hex file is signed according to the policy
-# 4) The CM0P and CM4 hex files are merged into a single hex file
-
-CY_BSP_POSTBUILD=$(CY_PYTHON_PATH) -c "import cysecuretools; \
-	from intelhex import IntelHex;  import shutil; \
-	tools = cysecuretools.CySecureTools('cy8ckit-064b0s2-4343w', 'policy/$(CY_SECURE_POLICY_NAME).json'); \
-	tools.sign_image('$(CY_CONFIG_DIR)/$(APPNAME).hex',16); \
-	shutil.copy2('./libs/psoc6cm0p/COMPONENT_CM0P_SECURE/psoc6_02_cm0p_secure.hex', \
-	'$(CY_CONFIG_DIR)/psoc6_02_cm0p_secure.hex'); \
-	tools.sign_image('$(CY_CONFIG_DIR)/psoc6_02_cm0p_secure.hex',1); \
-	ihex = IntelHex(); \
-	ihex.padding = 0x00; \
-    ihex.loadfile('$(CY_CONFIG_DIR)/$(APPNAME).hex', 'hex'); \
-    ihex.merge(IntelHex('$(CY_CONFIG_DIR)/psoc6_02_cm0p_secure.hex'), 'ignore'); \
-    ihex.write_hex_file('$(CY_CONFIG_DIR)/$(APPNAME).hex', write_start_addr=False, byte_count=16);"
-endif
-else
-CY_BSP_POSTBUILD=cysecuretools --target cyb06xxa --policy ./policy/$(CY_SECURE_POLICY_NAME).json sign-image --hex $(CY_CONFIG_DIR)/$(APPNAME).hex --image-id 1
-endif
-
+CY_BSP_POSTBUILD=$(CY_PYTHON_PATH) $(POST_BUILD_BSP_LIB_PATH)/psoc64_postbuild.py \
+				--core $(CORE) \
+				--secure-boot-stage $(SECURE_BOOT_STAGE) \
+				--policy $(CY_SECURE_POLICY_NAME) \
+				--target cyb06xxa \
+				--toolchain-path $(TOOLCHAIN_PATH) \
+				--toolchain $(TOOLCHAIN) \
+				--build-dir $(CY_CONFIG_DIR) \
+				--app-name $(APPNAME) \
+				--cm0-app-path $(POST_BUILD_CM0_LIB_PATH) \
+				--cm0-app-name psoc6_02_cm0p_secure

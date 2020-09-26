@@ -1,5 +1,5 @@
 # CY8CKIT-064B0S2-4343W BSP Release Notes
-The CY8CKIT-064B0S2-4343W PSoC 64 Wi-Fi BT Pioneer Kit is a low-cost hardware platform that enables design and debug of PSoC 6 MCUs. It comes with a Murata 1LV Module (CYW4343W Wi-Fi + Bluetooth Combo Chip), industry-leading CapSense for touch buttons and slider, on-board debugger/programmer with KitProg3, microSD card interface, 512-Mb Quad-SPI NOR flash, PDM-PCM microphone interface.
+The CY8CKIT-064B0S2-4343W PSoC 64 Secure Boot Wi-Fi BT Pioneer Kit is a low-cost hardware platform that enables design and debug of PSoC 64 MCUs. It comes with a Murata 1LV Module (CYW4343W Wi-Fi + Bluetooth Combo Chip), industry-leading CapSense for touch buttons and slider, on-board debugger/programmer with KitProg3, microSD card interface, 512-Mb Quad-SPI NOR flash, 4-MBit Quad-SPI FRAM, and a PDM-PCM microphone interface.
 
 NOTE: BSPs are versioned by family. This means that version 1.2.0 of any BSP in a family (eg: PSoC 6) will have the same software maturity level. However, not all updates are necessarily applicable for each BSP in the family so not all version numbers will exist for each board. Additionally, new BSPs may not start at version 1.0.0. In the event of adding a common feature across all BSPs, the libraries are assigned the same version number. For example if BSP_A is at v1.3.0 and BSP_B is at v1.2.0, the event will trigger a version update to v1.4.0 for both BSP_A and BSP_B. This allows the common feature to be tracked in a consistent way.
 
@@ -15,6 +15,15 @@ The CY8CKIT-064B0S2-4343W library includes the following:
 * API documentation
 
 ### What Changed?
+#### v2.0.0
+* Updated design files and GeneratedSource with ModusToolbox 2.2 release
+* Migrated pin definitions into design.modus file
+* Updated clock frequencies to 144 MHz (fast) / 72 MHz (slow)
+* Updated MPNs on some boards to non-obsolete parts
+* Switched psoc6pdl dependency to new mtb-pdl
+* Switched psoc6hal dependency to new mtb-hal
+* Switched psoc6make dependency to new core-make & recipe-make-cat1a
+NOTE: This version requires ModusToolbox tools 2.2 or later. This version is not backwards compatible with 1.X versions. Additional manual steps must be taken to successfully update a design using a 1.x version of the BSP to this version.
 #### v1.3.0
 * Minor update for documentation & branding
 * Updated design files to use latest personality files
@@ -42,10 +51,12 @@ This version of the CY8CKIT-064B0S2-4343W BSP was validated for compatibility wi
 
 | Software and Tools                        | Version |
 | :---                                      | :----:  |
-| ModusToolbox Software Environment         | 2.0     |
-| GCC Compiler                              | 7.4     |
-| IAR Compiler                              | 8.32    |
+| ModusToolbox Software Environment         | 2.2     |
+| GCC Compiler                              | 9.2     |
+| IAR Compiler                              | 8.4     |
 | ARM Compiler                              | 6.11    |
+
+Minimum required ModusToolbox Software Environment: v2.2
 
 ### More information
 * [CY8CKIT-064B0S2-4343W BSP API Reference Manual][api]
