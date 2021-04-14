@@ -6,7 +6,7 @@
 #
 ################################################################################
 # \copyright
-# Copyright 2018-2020 Cypress Semiconductor Corporation
+# Copyright 2018-2021 Cypress Semiconductor Corporation
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,20 +30,36 @@ endif
 include $(dir $(lastword $(MAKEFILE_LIST)))/locate_recipe.mk
 
 # MCU device selection
+#    Changing the device should be done using “make bsp” or “make update_bsp” with the “DEVICE_GEN”
+#    variable set to the new MCU. If you change the device manually here you must also update the
+#    design.modus file and re-run the device configurator.
 DEVICE:=CYB0644ABZI-S2D44
 # Additional devices on the board
+#    If you change the additional device here you must also update the design.modus file and re-run
+#    the device configurator. You may also need to update the COMPONENT variable to include the
+#    correct Wi-Fi and Bluetooth firmware.
 ADDITIONAL_DEVICES:=CYW4343WKUBG
 # Default target core to CM4 if not already set
 CORE?=CM4
 # Basic architecture specific components
-COMPONENTS+=CAT1A
+COMPONENTS+=$(TARGET) CAT1 CAT1A
 # Define default type of bootloading method [single, dual]
 # single -> CM4 only, multi -> CM0 and CM4
 SECURE_BOOT_STAGE?=single
 
+# Python path definition
+CY_PYTHON_REQUIREMENT=true
+
+# This only needs to run in the second stage where the CY_PYTHON_PATH gets defined
+ifneq ($(CY_PYTHON_PATH),)
+CY_SECURE_TOOLS_MAJOR_VERSION=$(word 1, $(subst ., ,$(filter-out , \
+							  $(subst cysecuretools==, , \
+							  $(shell $(CY_PYTHON_PATH) -m pip freeze | grep cysecuretools)))))
+endif
+
 ifeq ($(CORE),CM4)
 # Additional components supported by the target
-COMPONENTS+=BSP_DESIGN_MODUS PSOC6HAL 4343W
+COMPONENTS+=BSP_DESIGN_MODUS PSOC6HAL 4343W WLBGA
 #Add secure CM0P image in single stage
 ifeq ($(SECURE_BOOT_STAGE), single)
 COMPONENTS+=CM0P_SECURE
@@ -54,14 +70,34 @@ DEFINES+=CY_USING_HAL
 
 ifeq ($(SECURE_BOOT_STAGE),single)
 CY_LINKERSCRIPT_SUFFIX=cm4_dual
-CY_SECURE_POLICY_NAME?=policy_single_CM0_CM4
 else
 CY_LINKERSCRIPT_SUFFIX=cm4
-CY_SECURE_POLICY_NAME?=policy_multi_CM0_CM4
 endif
 
+# If cysecuretools is less than 3.0.0
+ifneq ($(strip $(filter 2 1 0,$(CY_SECURE_TOOLS_MAJOR_VERSION))),)
+ifeq ($(SECURE_BOOT_STAGE),single)
+CY_SECURE_POLICY_NAME?=policy_single_CM0_CM4
 else
 CY_SECURE_POLICY_NAME?=policy_multi_CM0_CM4
+endif
+else
+ifeq ($(SECURE_BOOT_STAGE),single)
+CY_SECURE_POLICY_NAME?=policy_single_CM0_CM4_swap
+else
+CY_SECURE_POLICY_NAME?=policy_multi_CM0_CM4_swap
+endif
+endif
+
+# CM0p
+else
+
+ifneq ($(strip $(filter 2 1 0,$(CY_SECURE_TOOLS_MAJOR_VERSION))),)
+CY_SECURE_POLICY_NAME?=policy_multi_CM0_CM4
+else
+CY_SECURE_POLICY_NAME?=policy_multi_CM0_CM4_swap
+endif
+
 endif
 
 #Define the toolchain path
@@ -70,9 +106,6 @@ TOOLCHAIN_PATH=$(CY_COMPILER_ARM_DIR)
 else
 TOOLCHAIN_PATH=$(CY_COMPILER_GCC_ARM_DIR)
 endif
-
-# Python path definition
-CY_PYTHON_REQUIREMENT=true
 
 # Check if CM0P Library exists
 POST_BUILD_CM0_LIB_PATH=$(call CY_MACRO_FINDLIB,psoc6cm0p)
