@@ -130,10 +130,14 @@ extern "C" {
 #if defined (CY_USING_HAL)
 	#define CYBSP_A6 (P10_6)
 	#define CYBSP_J2_13 CYBSP_A6
+	#define CYBSP_POT CYBSP_A6
 #endif //defined (CY_USING_HAL)
 #if defined (CY_USING_HAL)
 	#define CYBSP_A7 (P10_7)
 	#define CYBSP_J2_15 CYBSP_A7
+#endif //defined (CY_USING_HAL)
+#if defined (CY_USING_HAL)
+	#define CYBSP_QSPI_FRAM_SSEL (P11_0)
 #endif //defined (CY_USING_HAL)
 #if defined (CY_USING_HAL)
 	#define CYBSP_LED9 (P11_1)
@@ -141,6 +145,7 @@ extern "C" {
 #endif //defined (CY_USING_HAL)
 #if defined (CY_USING_HAL)
 	#define CYBSP_QSPI_SS (P11_2)
+	#define CYBSP_QSPI_FLASH_SSEL CYBSP_QSPI_SS
 #endif //defined (CY_USING_HAL)
 #if defined (CY_USING_HAL)
 	#define CYBSP_QSPI_D3 (P11_3)
