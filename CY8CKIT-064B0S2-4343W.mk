@@ -6,7 +6,9 @@
 #
 ################################################################################
 # \copyright
-# Copyright 2018-2021 Cypress Semiconductor Corporation
+# Copyright 2018-2021 Cypress Semiconductor Corporation (an Infineon company) or
+# an affiliate of Cypress Semiconductor Corporation
+#
 # SPDX-License-Identifier: Apache-2.0
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -59,7 +61,7 @@ endif
 
 ifeq ($(CORE),CM4)
 # Additional components supported by the target
-COMPONENTS+=BSP_DESIGN_MODUS PSOC6HAL 4343W WLBGA
+COMPONENTS+=BSP_DESIGN_MODUS PSOC6HAL 4343W MURATA-1DX HCI-UART
 #Add secure CM0P image in single stage
 ifeq ($(SECURE_BOOT_STAGE), single)
 COMPONENTS+=CM0P_SECURE
