@@ -2,7 +2,7 @@
 
 ## Overview
 
-The CY8CKIT-064B0S2-4343W PSoC 64 Secure Boot Wi-Fi BT Pioneer Kit is a low-cost hardware platform that enables design and debug of PSoC 64 MCUs. It comes with a Murata LBEE5KL1DX Module (CYW4343W Wi-Fi + Bluetooth Combo Chip), industry-leading CAPSENSE for touch buttons and slider, on-board debugger/programmer with KitProg3, microSD card interface, 512-Mb Quad-SPI NOR flash, 4-MBit Quad-SPI F-RAM, and a PDM-PCM microphone interface.
+The CY8CKIT-064B0S2-4343W PSoC™ 64 Secure Boot Wi-Fi BT Pioneer Kit is a low-cost hardware platform that enables design and debug of PSoC™ 64 MCUs. It comes with a Murata LBEE5KL1DX Module (CYW4343W Wi-Fi + Bluetooth Combo Chip), industry-leading CAPSENSE™ for touch buttons and slider, on-board debugger/programmer with KitProg3, microSD card interface, 512-Mb Quad-SPI NOR flash, 4-MBit Quad-SPI F-RAM, and a PDM-PCM microphone interface.
 
 ![](docs/html/board.png)
 
@@ -19,7 +19,7 @@ To use code from the BSP, simply include a reference to `cybsp.h`.
 
 ### Kit Contents:
 
-* PSoC 64 Wi-Fi BT Pioneer Board
+* PSoC™ 64 Wi-Fi BT Pioneer Board
 * USB Type-A to Micro-B cable
 * Quick Start Guide
 * Four jumper wires (4 inches each)
@@ -37,6 +37,7 @@ Components:
 Defines:
 * CYBSP_WIFI_CAPABLE - This define, disabled by default, causes the BSP to initialize the interface to an onboard wireless chip if it has one.
 * CY_USING_HAL - This define, enabled by default, specifies that the HAL is intended to be used by the application. This will cause the BSP to include the applicable header file and to initialize the system level drivers.
+* CYBSP_CUSTOM_SYSCLK_PM_CALLBACK - This define, disabled by default, causes the BSP to skip registering its default SysClk Power Management callback, if any, and instead to invoke the application-defined function `cybsp_register_custom_sysclk_pm_callback` to register an application-specific callback.
 
 ### Clock Configuration
 

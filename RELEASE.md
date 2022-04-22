@@ -1,5 +1,5 @@
 # CY8CKIT-064B0S2-4343W BSP Release Notes
-The CY8CKIT-064B0S2-4343W PSoC 64 Secure Boot Wi-Fi BT Pioneer Kit is a low-cost hardware platform that enables design and debug of PSoC 64 MCUs. It comes with a Murata LBEE5KL1DX Module (CYW4343W Wi-Fi + Bluetooth Combo Chip), industry-leading CAPSENSE for touch buttons and slider, on-board debugger/programmer with KitProg3, microSD card interface, 512-Mb Quad-SPI NOR flash, 4-MBit Quad-SPI F-RAM, and a PDM-PCM microphone interface.
+The CY8CKIT-064B0S2-4343W PSoC™ 64 Secure Boot Wi-Fi BT Pioneer Kit is a low-cost hardware platform that enables design and debug of PSoC™ 64 MCUs. It comes with a Murata LBEE5KL1DX Module (CYW4343W Wi-Fi + Bluetooth Combo Chip), industry-leading CAPSENSE™ for touch buttons and slider, on-board debugger/programmer with KitProg3, microSD card interface, 512-Mb Quad-SPI NOR flash, 4-MBit Quad-SPI F-RAM, and a PDM-PCM microphone interface.
 
 NOTE: BSPs are versioned by family. This means that version 1.2.0 of any BSP in a family (eg: PSoC™ 6) will have the same software maturity level. However, not all updates are necessarily applicable for each BSP in the family so not all version numbers will exist for each board. Additionally, new BSPs may not start at version 1.0.0. In the event of adding a common feature across all BSPs, the libraries are assigned the same version number. For example if BSP_A is at v1.3.0 and BSP_B is at v1.2.0, the event will trigger a version update to v1.4.0 for both BSP_A and BSP_B. This allows the common feature to be tracked in a consistent way.
 
@@ -15,6 +15,9 @@ The CY8CKIT-064B0S2-4343W library includes the following:
 * API documentation
 
 ### What Changed?
+#### v3.1.0
+* Added optional macro CYBSP_CUSTOM_SYSCLK_PM_CALLBACK to allow overriding default clock power management behavior.
+* Enable AIROC BLE stack for MCUs with an integrated BLE radio
 #### v3.0.0
 * Updated to HAL dependency to v2.0.0
 * Updated CAPSENSE™ dependency to v3.0.0
