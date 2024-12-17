@@ -2,7 +2,7 @@
 
 ## Overview
 
-The CY8CKIT-064B0S2-4343W PSoC™ 64 Secure Boot Wi-Fi BT Pioneer Kit is a low-cost hardware platform that enables design and debug of PSoC™ 64 MCUs. It comes with a Murata LBEE5KL1DX Module (CYW4343W Wi-Fi + Bluetooth Combo Chip), industry- leading CAPSENSE™ for touch buttons and slider, on-board debugger/programmer with KitProg3, microSD card interface, 512-Mb Quad-SPI NOR flash, 4-MBit Quad-SPI F-RAM, and a PDM-PCM microphone interface.
+The CY8CKIT-064B0S2-4343W PSOC™ 64 Secure Boot Wi-Fi BT Pioneer Kit is a low-cost hardware platform that enables design and debug of PSOC™ 64 MCUs. It comes with a Murata LBEE5KL1DX Module (CYW4343W Wi-Fi + Bluetooth Combo Chip), industry- leading CAPSENSE™ for touch buttons and slider, on-board debugger/programmer with KitProg3, microSD card interface, 512-Mb Quad-SPI NOR flash, 4-MBit Quad-SPI F-RAM, and a PDM-PCM microphone interface.
 
 ![](docs/html/board.png)
 
@@ -19,7 +19,7 @@ To use code from the BSP, simply include a reference to `cybsp.h`.
 
 ### Kit Contents:
 
-* PSoC™ 64 Wi-Fi BT Pioneer Board
+* PSOC™ 64 Wi-Fi BT Pioneer Board
 * USB Type-A to Micro-B cable
 * Quick Start Guide
 * Four jumper wires (4 inches each)
@@ -71,4 +71,4 @@ See the [BSP API Reference Manual][api] for the complete list of the provided in
 [settings]: https://infineon.github.io/TARGET_CY8CKIT-064B0S2-4343W/html/md_bsp_settings.html
 
 ---
-© Cypress Semiconductor Corporation (an Infineon company) or an affiliate of Cypress Semiconductor Corporation, 2019-2022.
+© Cypress Semiconductor Corporation (an Infineon company) or an affiliate of Cypress Semiconductor Corporation, 2019-2024.
